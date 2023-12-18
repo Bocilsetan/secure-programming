@@ -14,19 +14,24 @@ if (isset($_POST['uname']) && isset($_POST['password'])
 
 	$uname = validate($_POST['uname']);
 	$pass = validate($_POST['password']);
-
+	$uppercase = preg_match('@[A-Z]', $pass);
+	$lowercase = preg_match('@[a-z]', $pass);
+	$number = preg_match('@[0-9]', $pass);
 	$re_pass = validate($_POST['re_password']);
 	$name = validate($_POST['name']);
 
 	$user_data = 'uname='. $uname. '&name='. $name;
 
-
+	
 	if (empty($uname)) {
 		header("Location: signup.php?error=User Name is required&$user_data");
 	    exit();
 	}else if(empty($pass)){
         header("Location: signup.php?error=Password is required&$user_data");
 	    exit();
+	}
+	else if(!$uppercase||!$lowercase||!$number||strlen($pass)<8){
+		header("Location: signup.php?error=Password should be at least 8 characters long with at least one uppercase letter!");
 	}
 	else if(empty($re_pass)){
         header("Location: signup.php?error=Re Password is required&$user_data");
